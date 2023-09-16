@@ -14,7 +14,7 @@ import locales, { Language } from "@/data/locales";
 import useStorage from "@/hooks/useStorage";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [storageLanguage, setStorageLanguage] = useStorage("lang", "ja");
+  const [storageLanguage, setStorageLanguage] = useStorage("lang", "en");
   const [language, setLanguage] = useState<Language>(storageLanguage);
 
   PageController.getContext().setLocaleLanguage(language);
