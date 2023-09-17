@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { PageController, WidgetsProvider } from "@sitecore-search/react";
+import { useEffect, useState } from "react";
 import { LanguageContext } from "@/contexts/languageContext";
-
-import type { AppProps } from "next/app";
+import { PageController, WidgetsProvider } from "@sitecore-search/react";
 import type { Environment } from "@sitecore-search/data";
+import type { AppProps } from "next/app";
+import useStorage from "@/hooks/useLocalStorage";
+import locales, { Language } from "@/data/locales";
 import {
   SEARCH_ENV,
   SEARCH_CUSTOMER_KEY,
   SEARCH_API_KEY,
 } from "@/constants/search";
 import Header from "@/components/Header";
-import locales, { Language } from "@/data/locales";
-import useStorage from "@/hooks/useStorage";
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [storageLanguage, setStorageLanguage] = useStorage("lang", "en");
+  const [storageLanguage, setStorageLanguage] = useStorage(
+    "lang",
+    "en" as Language
+  );
   const [language, setLanguage] = useState<Language>(storageLanguage);
 
   PageController.getContext().setLocaleLanguage(language);
