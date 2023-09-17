@@ -1,3 +1,4 @@
+import "@/styles/globals.css";
 import { useEffect, useState } from "react";
 import { LanguageContext } from "@/contexts/languageContext";
 import { PageController, WidgetsProvider } from "@sitecore-search/react";

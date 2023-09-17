@@ -10,7 +10,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div>Hello Sitecore Search</div>
+        <h1 className="text-3xl font-bold underline">Hello Sitecore Search</h1>
       </main>
     </>
   );
