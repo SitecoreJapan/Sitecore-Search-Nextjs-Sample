@@ -6,9 +6,15 @@ import {
   usePreviewSearch,
   widget,
 } from "@sitecore-search/react";
-import { ArticleCard, NavMenu, Presence } from "@sitecore-search/ui";
+import { Presence } from "@sitecore-search/ui";
 import type { PreviewSearchActionProps } from "@sitecore-search/widgets";
-import { useRouter } from "next/router";
+
+import {
+  ArticleCardStyled,
+  LoaderAnimation,
+  LoaderContainer,
+  NavMenuStyled,
+} from "./styled";
 
 type ArticleModel = {
   id: string;
@@ -17,6 +23,7 @@ type ArticleModel = {
   url: string;
   source_id?: string;
 };
+
 const Articles = ({
   loading = false,
   articles,
@@ -25,53 +32,52 @@ const Articles = ({
   loading?: boolean;
   articles: Array<ArticleModel>;
   onItemClick: PreviewSearchActionProps["onItemClick"];
-}) => {
-  const router = useRouter();
-  return (
-    <NavMenu.Content>
-      <Presence present={loading}>
-        <div>
-          <svg
-            aria-busy={loading}
-            aria-hidden={!loading}
-            focusable="false"
-            role="progressbar"
-            viewBox="0 0 20 20"
-          >
-            <path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" />
-          </svg>
-        </div>
-      </Presence>
-      <NavMenu.List>
-        {!loading &&
-          articles.map((article, index) => (
-            <NavMenu.Item key={article.id}>
-              <NavMenu.Link
-                href={article.url}
-                onClick={(e) => {
-                  e.preventDefault();
-                  onItemClick({
-                    id: article.id,
-                    index,
-                    sourceId: article.source_id,
-                  });
-                  // add redirection or any action
-                }}
-              >
-                <ArticleCard.Root>
-                  <div>
-                    <ArticleCard.Image src={article.image_url} />
-                  </div>
-                  <ArticleCard.Title>{article.name}</ArticleCard.Title>
-                </ArticleCard.Root>
-              </NavMenu.Link>
-            </NavMenu.Item>
-          ))}
-      </NavMenu.List>
-    </NavMenu.Content>
-  );
-};
+}) => (
+  <NavMenuStyled.Grid>
+    <Presence present={loading}>
+      <LoaderContainer>
+        <LoaderAnimation
+          aria-busy={loading}
+          aria-hidden={!loading}
+          focusable="false"
+          role="progressbar"
+          viewBox="0 0 20 20"
+        >
+          <path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" />
+        </LoaderAnimation>
+      </LoaderContainer>
+    </Presence>
+    <NavMenuStyled.SubList>
+      {!loading &&
+        articles.map((article, index) => (
+          <NavMenuStyled.SubItem key={article.id}>
+            <NavMenuStyled.Link
+              href={article.url}
+              onClick={(e) => {
+                e.preventDefault();
+                onItemClick({
+                  id: article.id,
+                  index,
+                  sourceId: article.source_id,
+                });
+                // add redirection or any action
+              }}
+            >
+              <ArticleCardStyled.Root>
+                <ArticleCardStyled.ImageWrapper>
+                  <ArticleCardStyled.Image src={article.image_url} />
+                </ArticleCardStyled.ImageWrapper>
+                <ArticleCardStyled.Name>{article.name}</ArticleCardStyled.Name>
+              </ArticleCardStyled.Root>
+            </NavMenuStyled.Link>
+          </NavMenuStyled.SubItem>
+        ))}
+    </NavMenuStyled.SubList>
+  </NavMenuStyled.Grid>
+);
+
 type InitialState = PreviewSearchInitialState<"itemsPerPage">;
+
 export const PreviewSearchComponent = ({ defaultItemsPerPage = 6 }) => {
   const {
     widgetRef,
@@ -86,29 +92,30 @@ export const PreviewSearchComponent = ({ defaultItemsPerPage = 6 }) => {
       itemsPerPage: defaultItemsPerPage,
     },
   });
+
   const loading = isLoading || isFetching;
+
   const keyphraseHandler = useCallback(
     (event: KeyboardEvent) => {
       const target = event.target as HTMLInputElement;
-      onKeyphraseChange({
-        keyphrase: target.value,
-      });
+      onKeyphraseChange({ keyphrase: target.value });
     },
     [onKeyphraseChange]
   );
+
   return (
-    <NavMenu.Root className="root">
-      <NavMenu.List className="w-1/2">
-        <NavMenu.Item>
-          <NavMenu.InputTrigger
+    <NavMenuStyled.Root>
+      <NavMenuStyled.MainList>
+        <NavMenuStyled.MainListItem>
+          <NavMenuStyled.InputTrigger
             onChange={keyphraseHandler}
             autoComplete="off"
             placeholder="Type to search..."
           />
-          <NavMenu.Content>
+          <NavMenuStyled.MainContent>
             <Presence present={loading}>
-              <div>
-                <svg
+              <LoaderContainer>
+                <LoaderAnimation
                   aria-busy={loading}
                   aria-hidden={!loading}
                   focusable="false"
@@ -116,30 +123,30 @@ export const PreviewSearchComponent = ({ defaultItemsPerPage = 6 }) => {
                   viewBox="0 0 20 20"
                 >
                   <path d="M7.229 1.173a9.25 9.25 0 1 0 11.655 11.412 1.25 1.25 0 1 0-2.4-.698 6.75 6.75 0 1 1-8.506-8.329 1.25 1.25 0 1 0-.75-2.385z" />
-                </svg>
-              </div>
+                </LoaderAnimation>
+              </LoaderContainer>
             </Presence>
             {!loading && (
-              <NavMenu.SubContent
+              <NavMenuStyled.SubContent
                 orientation="vertical"
                 value="defaultArticlesResults"
                 ref={widgetRef}
               >
-                <NavMenu.List>
-                  <NavMenu.Item
+                <NavMenuStyled.GroupList>
+                  <NavMenuStyled.DefaultGroup
                     value="defaultArticlesResults"
                     key="defaultArticlesResults"
                   >
-                    <NavMenu.Trigger aria-hidden />
+                    <NavMenuStyled.DefaultTrigger aria-hidden />
                     <Articles articles={articles} onItemClick={onItemClick} />
-                  </NavMenu.Item>
-                </NavMenu.List>
-              </NavMenu.SubContent>
+                  </NavMenuStyled.DefaultGroup>
+                </NavMenuStyled.GroupList>
+              </NavMenuStyled.SubContent>
             )}
-          </NavMenu.Content>
-        </NavMenu.Item>
-      </NavMenu.List>
-    </NavMenu.Root>
+          </NavMenuStyled.MainContent>
+        </NavMenuStyled.MainListItem>
+      </NavMenuStyled.MainList>
+    </NavMenuStyled.Root>
   );
 };
 const PreviewSearchWidget = widget(

@@ -14,7 +14,7 @@ export default function LocaleSelector() {
     if (savedLanguage && languages[savedLanguage]) {
       setLanguage(savedLanguage);
     }
-  }, []);
+  }, [setLanguage]);
 
   // ドロップダウンリストの変更ハンドラ
   const handleLanguageChange = (
