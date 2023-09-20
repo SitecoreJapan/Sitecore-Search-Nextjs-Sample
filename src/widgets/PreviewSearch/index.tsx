@@ -57,7 +57,10 @@ const Articles = ({
             >
               <ArticleCard.Root>
                 <div>
-                  <ArticleCard.Image src={article.image_url} />
+                  <ArticleCard.Image
+                    src={article.image_url}
+                    className="m-auto mb-10 relative h-90 flex justify-center items-center overflow-hidden"
+                  />
                 </div>
                 <ArticleCard.Title>{article.name}</ArticleCard.Title>
               </ArticleCard.Root>

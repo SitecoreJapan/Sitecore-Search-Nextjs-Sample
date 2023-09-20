@@ -27,10 +27,12 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.11.0",
     "react-select": "^5.7.4",
+    "styled-components": "^5.3.11",
     "tailwindcss": "^3.3.3",
     "typescript": "5.2.2"
   },
   "devDependencies": {
-    "@sitecore-search/cli": "^2.0.0"
+    "@sitecore-search/cli": "^2.0.0",
+    "@types/styled-components": "^5.1.27"
   }
 }
