@@ -9,21 +9,21 @@ export default function Header() {
     <>
       <header className="dark:bg-gray-900">
         <div className="flex flex-row h-16">
-          <div className="basis-1/4 z-10 flex items-center">
+          <div className="basis-1/5 z-10 flex items-center">
             <Link href="/">
               <Image
                 src="/sitecore.svg"
                 width="180"
                 height="55"
                 alt="Next.js"
-                className="hidden md:block"
+                className="hidden md:block mx-4"
               />
             </Link>
           </div>
-          <div className="basis-1/2 z-0 flex items-center justify-center">
+          <div className="basis-3/5 z-0 flex items-center justify-center">
             <HeaderInput />
           </div>
-          <div className="basis-1/4 z-10 flex items-center justify-end">
+          <div className="basis-1/5 z-10 flex items-center justify-end">
             <div className="mx-4">
               <LocaleSelector />
             </div>
