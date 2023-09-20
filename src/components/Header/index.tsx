@@ -6,37 +6,33 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="dark:bg-gray-900">
-      <div className="mx-auto max-w-7xl px-2 md:px-4 lg:divide-y lg:divide-gray-200 lg:px-8">
-        <div className="relative flex h-16 justify-between">
-          <div className="relative z-10 flex px-2 lg:px-0">
-            <div className="flex flex-shrink-0 items-center">
-              <Link href="/">
-                <Image
-                  src="/sitecore.svg"
-                  width="180"
-                  height="55"
-                  alt="Next.js"
-                  className=" hidden md:block"
-                />
-              </Link>
-            </div>
+    <>
+      <header className="dark:bg-gray-900">
+        <div className="flex flex-row h-16">
+          <div className="basis-1/5 z-10 flex items-center">
+            <Link href="/">
+              <Image
+                src="/sitecore.svg"
+                width="180"
+                height="55"
+                alt="Next.js"
+                className="hidden md:block mx-4"
+              />
+            </Link>
           </div>
-          <div className="relative z-0 flex flex-1 items-center justify-center px-2 sm:absolute sm:inset-0">
-            <div className="w-full sm:max-w-xs">
-              <HeaderInput />
-            </div>
+          <div className="basis-3/5 z-0 flex items-center justify-center">
+            <HeaderInput />
           </div>
-          <div className="relative z-10 flex items-center">
+          <div className="basis-1/5 z-10 flex items-center justify-end">
             <div className="mx-4">
               <LocaleSelector />
             </div>
-            <div>
+            <div className="mx-4">
               <ThemeSwitcher />
             </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }
