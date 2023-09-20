@@ -1,5 +1,4 @@
 import PreviewSearch from "@/widgets/PreviewSearch";
-import PreviewSearchOriginal from "@/widgets/PrevewSearchOriginal";
 
 export default function HeaderInput() {
   return (

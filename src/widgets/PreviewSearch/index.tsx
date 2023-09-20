@@ -39,10 +39,10 @@ const Articles = ({
         </svg>
       </div>
     </Presence>
-    <NavMenu.List>
+    <NavMenu.List className="grid grid-cols-3">
       {!loading &&
         articles.map((article, index) => (
-          <NavMenu.Item key={article.id}>
+          <NavMenu.Item key={article.id} className="mr-1 ml-1 mt-2">
             <NavMenu.Link
               href={article.url}
               onClick={(e) => {
@@ -57,10 +57,7 @@ const Articles = ({
             >
               <ArticleCard.Root>
                 <div>
-                  <ArticleCard.Image
-                    src={article.image_url}
-                    className="m-auto mb-10 relative h-90 flex justify-center items-center overflow-hidden"
-                  />
+                  <ArticleCard.Image src={article.image_url} />
                 </div>
                 <ArticleCard.Title>{article.name}</ArticleCard.Title>
               </ArticleCard.Root>
@@ -124,6 +121,7 @@ export const PreviewSearchComponent = ({ defaultItemsPerPage = 6 }) => {
                 orientation="vertical"
                 value="defaultArticlesResults"
                 ref={widgetRef}
+                className="absolute top-4 left-0"
               >
                 <NavMenu.List>
                   <NavMenu.Item
