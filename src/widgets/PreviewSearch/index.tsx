@@ -127,7 +127,6 @@ export const PreviewSearchComponent = ({ defaultItemsPerPage = 6 }) => {
                   <NavMenu.Item
                     value="defaultArticlesResults"
                     key="defaultArticlesResults"
-                    className="NavMenu.Item"
                   >
                     <NavMenu.Trigger aria-hidden />
                     <Articles articles={articles} onItemClick={onItemClick} />
