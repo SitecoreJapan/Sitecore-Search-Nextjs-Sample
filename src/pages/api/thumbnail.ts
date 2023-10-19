@@ -1,5 +1,9 @@
 const axios = require("axios");
 import type { NextApiRequest, NextApiResponse } from "next";
+import {
+  BlobServiceClient,
+  StorageSharedKeyCredential,
+} from "@azure/storage-blob";
 
 export default async function handler(
   req: NextApiRequest,
@@ -7,6 +11,11 @@ export default async function handler(
 ) {
   const { url } = req.query as { url: string };
   const NEXT_PUBLIC_PLAYWRIGHT = process.env.NEXT_PUBLIC_PLAYWRIGHT;
+
+  const AZURE_STORAGE_ACCOUNT = process.env["AZURE_STORAGE_ACCOUNT"] || "";
+  const AZURE_STORAGE_ACCESS_KEY =
+    process.env["AZURE_STORAGE_ACCESS_KEY"] || "";
+  const AZURE_STORAGE_CONTAINER = process.env["AZURE_STORAGE_CONTAINER"] || "";
 
   let domain: string | null = null;
   let path: string | null = null;
@@ -47,15 +56,45 @@ export default async function handler(
     return { status: 400, body: "Invalid URL" };
   }
 
-  try {
-    const externalApiUrl =
-      NEXT_PUBLIC_PLAYWRIGHT + "/api/screenshot?url=" + url;
-    const response = await axios.get(externalApiUrl);
-    const imageData = response.data.screenshot;
-    const decodedImageData = Buffer.from(imageData, "base64");
+  // Azure Blob Storageの認証情報を作成
+  const sharedKeyCredential = new StorageSharedKeyCredential(
+    AZURE_STORAGE_ACCOUNT,
+    AZURE_STORAGE_ACCESS_KEY
+  );
+  const blobServiceClient = new BlobServiceClient(
+    `https://${AZURE_STORAGE_ACCOUNT}.blob.core.windows.net`,
+    sharedKeyCredential
+  );
+  const containerClient = blobServiceClient.getContainerClient(
+    AZURE_STORAGE_CONTAINER
+  );
 
-    res.setHeader("Content-Type", "image/png");
-    res.status(200).end(decodedImageData, "binary");
+  try {
+    const blockBlobClient = containerClient.getBlockBlobClient(
+      domain + "/" + filename + ".png"
+    );
+    const exists = await blockBlobClient.exists();
+
+    if (!exists) {
+      const externalApiUrl =
+        NEXT_PUBLIC_PLAYWRIGHT + "/api/screenshot?url=" + url;
+      const response = await axios.get(externalApiUrl);
+      const imageData = response.data.screenshot;
+      const decodedImageData = Buffer.from(imageData, "base64");
+
+      await blockBlobClient.uploadData(decodedImageData);
+      console.log("Image was uploaded");
+
+      res.setHeader("Content-Type", "image/png");
+      res.status(200).end(decodedImageData, "binary");
+    } else {
+      const downloadResponse = await blockBlobClient.downloadToBuffer();
+
+      console.log("file is exist");
+
+      res.setHeader("Content-Type", "image/png");
+      res.status(200).end(downloadResponse, "binary");
+    }
   } catch (error) {
     return res.status(500).json({ error: "Can't get content data" });
   }

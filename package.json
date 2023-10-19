@@ -32,6 +32,7 @@
     "typescript": "5.2.2"
   },
   "devDependencies": {
+    "@azure/storage-blob": "^12.16.0",
     "@sitecore-search/cli": "^2.0.0"
   }
 }
