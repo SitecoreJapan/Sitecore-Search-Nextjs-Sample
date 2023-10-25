@@ -1,0 +1,17 @@
+services:
+  nextsearch:
+    image: ${COMPOSE_PROJECT_NAME}:${PROJECT_VERSION}
+    platform: linux/amd64
+    build:
+      context: .
+      args:
+        PARENT_IMAGE: ${NODEJS_PARENT_IMAGE}
+    environment:
+      NEXT_PUBLIC_SEARCH_ENV: ${NEXT_PUBLIC_SEARCH_ENV}
+      NEXT_PUBLIC_SEARCH_CUSTOMER_KEY: ${NEXT_PUBLIC_SEARCH_CUSTOMER_KEY}
+      NEXT_PUBLIC_SEARCH_API_KEY: ${NEXT_PUBLIC_SEARCH_API_KEY}
+      NEXT_PUBLIC_SEARCH_PATH=: ${NEXT_PUBLIC_SEARCH_PATH}
+    ports:
+      - "3000:3000"
+    networks:
+      - default
